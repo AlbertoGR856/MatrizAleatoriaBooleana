@@ -20,8 +20,8 @@ public class Matriz {
     //para inicializar y dar el tamaño la matriz booleana
     public Matriz() {
         Random aleatorio = new Random();
-        this.x = aleatorio.nextInt(100 - 100 + 1) + 100;
-        this.y = aleatorio.nextInt(100 - 100 + 1) + 100;
+        this.x = aleatorio.nextInt(10 - 3 + 1) + 3;
+        this.y = aleatorio.nextInt(10 - 3 + 1) + 3;
         this.matriz = new boolean[x][y];
     }
 
@@ -55,7 +55,6 @@ public class Matriz {
     //y este rodeada de false en sus vecinas. El metodo devuelve un objeto Coordenada
     public Coordenada trueVecinas(boolean[][] matriz) {
 
-        Coordenada coordenada = null;
         boolean resultado = false;
         for (int i = 0; i < matriz.length; i++) {
 
@@ -67,8 +66,9 @@ public class Matriz {
 
                     if (resultado == true) {
 
-                        coordenada = new Coordenada(i, j);
+                        Coordenada coordenada = new Coordenada(i, j);
 
+                        return coordenada;
                     }
 
                 }
@@ -76,37 +76,42 @@ public class Matriz {
 
         }
 
-        return coordenada;
+        return null;
 
     }
 
     public boolean recorrerVecinas(boolean[][] matriz, int i, int j) {
 
-        boolean resultado = true;
+        int[] minimo = {i - 1, j - 1};
+        int[] maximo = {i + 1, j + 1};
 
-        for (int k = i - 1; k <= i + 1; k++) {
-
-            if (k > 0 && k < matriz.length) {
-
-                for (int m = j - 1; m <= j + 1; m++) {
-
-                    if (m >= 0 && m < matriz[k].length) {
-
-                        if (!((i != k && j == m) && matriz[k][m] == true)) {
-
-                            resultado = false;
-                            
-                            return resultado;
-                        }
-
-                    }
-                }
-
-            }
-
+        if (minimo[0] < 0) {
+            minimo[0]++;
         }
 
-        return resultado;
+        if (maximo[0] >= matriz.length) {
+            maximo[0]--;
+        }
+
+        for (int k = minimo[0]; k <= maximo[0]; k++) {
+            if (minimo[1] < 0) {
+                minimo[1]++;
+            }
+            if (maximo[1] >= matriz[k].length) {
+                maximo[1]--;
+            }
+
+            for (int l = minimo[1]; l <= maximo[1]; l++) {
+                if (k != i || j != l) {
+                    if (matriz[k][l]) {
+                        return false;
+                    }
+
+                }
+            }
+        }
+
+        return true;
     }
 
     public boolean[][] getMatriz() {
